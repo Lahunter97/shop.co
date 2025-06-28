@@ -216,3 +216,72 @@ body {
     text-align: center;
   }
 }
+
+
+
+/* карт пейдж */
+
+.cart-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cart-item {
+  margin-bottom: 1rem;
+}
+
+.cart-item-thumb {
+  width: 80px;
+  height: auto;
+  margin-right: 15px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-container .gap {
+  gap: 1rem;
+}
+
+.cart-summary {
+  position: sticky;
+  top: 1rem;
+}
+
+.gap {
+  gap: 1rem;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  background-color: #ff4757;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+/* конфирмейшн пейдж */
+
+.checkout-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.checkout-form .input {
+  border: 1px solid #ddd;
+  transition: border-color 0.2s;
+}
+
+.checkout-form .input.is-danger {
+  border-color: red;
+}
+

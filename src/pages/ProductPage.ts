@@ -1,3 +1,7 @@
+import router from '../router';
+import { updateCartCount } from '../components/Header';
+import renderHeader from '../components/Header';
+
 export default function renderProductPage(productId: string): HTMLElement {
   const section = document.createElement('section');
   section.className = 'section';
@@ -24,7 +28,6 @@ export default function renderProductPage(productId: string): HTMLElement {
       loadingText.style.display = 'none';
       productContainer.style.display = 'flex';
 
-      // Обработка хлебных крошек
       const category = product.category;
       const formattedCategory = category
         .split('-')
@@ -37,10 +40,9 @@ export default function renderProductPage(productId: string): HTMLElement {
       breadcrumbCat.textContent = formattedCategory;
       breadcrumbProd.textContent = product.title;
 
-      // Миниатюры
       const thumbnails = product.images
         .map(
-          (src, index) => `
+          (src: string, index: number) => `
           <img src="${src}" class="thumbnail ${index === 0 ? 'active' : ''}" data-index="${index}" />
         `
         )
@@ -83,7 +85,6 @@ export default function renderProductPage(productId: string): HTMLElement {
         </div>
       `;
 
-      // Смена изображения
       const mainImage = productContainer.querySelector('#main-image') as HTMLImageElement;
       const thumbs = productContainer.querySelectorAll('.thumbnail');
       thumbs.forEach((thumb) => {
@@ -94,7 +95,6 @@ export default function renderProductPage(productId: string): HTMLElement {
         });
       });
 
-      // Управление количеством
       const quantityInput = productContainer.querySelector('#quantity') as HTMLInputElement;
       const increaseBtn = productContainer.querySelector('#increase-qty')!;
       const decreaseBtn = productContainer.querySelector('#decrease-qty')!;
@@ -106,40 +106,43 @@ export default function renderProductPage(productId: string): HTMLElement {
           quantityInput.value = String(Number(quantityInput.value) - 1);
       });
 
-      // Добавление в корзину
       const addToCartBtn = productContainer.querySelector('#add-to-cart') as HTMLButtonElement;
       const message = productContainer.querySelector('#cart-message') as HTMLElement;
 
-      addToCartBtn.addEventListener('click', async () => {
+      addToCartBtn.addEventListener('click', () => {
         const quantity = parseInt(quantityInput.value, 10);
-        const cart = JSON.parse(localStorage.getItem('cart') || 'null');
+        const stored = localStorage.getItem('cart');
+        const productToAdd = {
+          id: product.id,
+          title: product.title,
+          thumbnail: product.thumbnail || product.images[0],
+          price: product.price,
+          quantity,
+        };
 
-        if (!cart) {
-          const res = await fetch('https://dummyjson.com/carts/add', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              userId: 1,
-              products: [{ id: product.id, quantity }],
-            }),
-          });
-          const newCart = await res.json();
-          localStorage.setItem('cart', JSON.stringify(newCart));
+        let cart = stored ? JSON.parse(stored) : { id: 1, products: [] };
+
+        const existing = cart.products.find((p: any) => p.id === product.id);
+
+        if (existing) {
+          existing.quantity += quantity;
         } else {
-          const res = await fetch(`https://dummyjson.com/carts/${cart.id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              merge: true,
-              products: [{ id: product.id, quantity }],
-            }),
-          });
-          const updatedCart = await res.json();
-          localStorage.setItem('cart', JSON.stringify(updatedCart));
+          cart.products.push(productToAdd);
         }
+
+        cart.total = cart.products.reduce((sum: number, p: any) => sum + p.price * p.quantity, 0);
+        cart.discountedTotal = cart.products.reduce(
+          (sum: number, p: any) => sum + p.price * p.quantity * 0.9, 0
+        );
+
+        localStorage.setItem('cart', JSON.stringify(cart));
 
         message.style.display = 'block';
         setTimeout(() => (message.style.display = 'none'), 2000);
+
+        updateCartCount();
+        const newHeader = renderHeader();
+        document.querySelector('header')?.replaceWith(newHeader);
       });
     })
     .catch(() => {
