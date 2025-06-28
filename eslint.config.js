@@ -1,28 +1,33 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
+import js from '@eslint/js';
+import parser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+/** @type {import("eslint").Linter.FlatConfig[]} */
+export default [
+  js.configs.recommended,
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.ts'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      parser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        HTMLElement: 'readonly',
+        Node: 'readonly',
+        console: 'readonly',
+        fetch: 'readonly'
+      },
     },
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      '@typescript-eslint': tsPlugin,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'no-undef': 'off',
+      'no-console': 'off'
     },
   },
-)
+];
