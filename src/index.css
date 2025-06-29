@@ -31,7 +31,7 @@ body {
 }
 
 .breadcrumb {
-  padding-left: 20px;
+  padding-left: 100px;
 }
 
 #apply-filter {
@@ -269,6 +269,77 @@ body {
 
 
 
+
+/* чек аут пейдж */
+
+/* Checkout Page form spacing */
+.checkout-form {
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+
+/* Red border for invalid inputs */
+input.is-invalid {
+  border: 1px solid red;
+  box-shadow: none;
+}
+
+/* Default border for valid inputs */
+input:not(.is-invalid) {
+  border: 1px solid #dbdbdb;
+}
+
+/* Custom validation fallback */
+input:invalid.is-invalid {
+  border-color: red;
+  box-shadow: none;
+}
+
+input:valid {
+  border-color: #dbdbdb;
+}
+
+/* Align Order Summary with form */
+.checkout-summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 32px;
+}
+
+/* Reduce horizontal gap between columns */
+.checkout-page .columns {
+  margin-left: -20px;
+  margin-right: 0;
+  gap: 10px;
+}
+
+/* Set widths explicitly via inline style, just remove default column padding */
+.checkout-page .column {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Optional: enforce responsive layout on smaller screens */
+@media (max-width: 768px) {
+  .checkout-page .columns {
+    flex-direction: column;
+  }
+
+  .checkout-page .column {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .checkout-summary {
+    padding-top: 2rem;
+  }
+}
+
+
+
+
+
 /* конфирмейшн пейдж */
 
 .checkout-form {
@@ -284,4 +355,7 @@ body {
 .checkout-form .input.is-danger {
   border-color: red;
 }
+
+
+
 

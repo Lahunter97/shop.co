@@ -3,6 +3,7 @@ import renderHomePage from './pages/HomePage';
 import renderCategoryPage from './pages/CategoryPage';
 import renderProductPage from './pages/ProductPage';
 import renderCartPage from './pages/CartPage';
+import renderCheckoutPage from './pages/CheckoutPage'; 
 import renderHeader from './components/Header';
 import renderFooter from './components/Footer';
 
@@ -33,6 +34,12 @@ export function renderApp() {
       root.innerHTML = '';
       root.appendChild(renderHeader());
       root.appendChild(renderCartPage());
+      root.appendChild(renderFooter());
+    })
+    .on('/checkout/:cartId', ({ data }) => { 
+      root.innerHTML = '';
+      root.appendChild(renderHeader());
+      root.appendChild(renderCheckoutPage(data.cartId)); 
       root.appendChild(renderFooter());
     })
     .resolve();
