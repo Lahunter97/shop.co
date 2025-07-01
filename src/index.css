@@ -337,11 +337,6 @@ input:valid {
 }
 
 
-
-
-
-/* конфирмейшн пейдж */
-
 .checkout-form {
   max-width: 600px;
   margin: 0 auto;
@@ -358,4 +353,27 @@ input:valid {
 
 
 
+
+/* конфирмейшн пейдж */
+
+.confirmation-page {
+  padding: 0 20px;
+}
+
+.confirmation-page .title {
+  margin-bottom: 1rem;
+}
+
+.confirmation-page .confirmation-message {
+  color: #7a7a7a;
+  border: 3px solid #dbdbdb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  font-size: 1.125rem;
+  margin-top: 2rem;
+  width: 60%;
+  display: flex;
+  justify-content: left;
+}
 

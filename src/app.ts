@@ -3,7 +3,8 @@ import renderHomePage from './pages/HomePage';
 import renderCategoryPage from './pages/CategoryPage';
 import renderProductPage from './pages/ProductPage';
 import renderCartPage from './pages/CartPage';
-import renderCheckoutPage from './pages/CheckoutPage'; 
+import renderCheckoutPage from './pages/CheckoutPage';
+import renderConfirmationPage from './pages/ConfirmationPage'; 
 import renderHeader from './components/Header';
 import renderFooter from './components/Footer';
 
@@ -40,6 +41,12 @@ export function renderApp() {
       root.innerHTML = '';
       root.appendChild(renderHeader());
       root.appendChild(renderCheckoutPage(data.cartId)); 
+      root.appendChild(renderFooter());
+    })
+    .on('/confirmation', () => {
+      root.innerHTML = '';
+      root.appendChild(renderHeader());
+      root.appendChild(renderConfirmationPage());
       root.appendChild(renderFooter());
     })
     .resolve();

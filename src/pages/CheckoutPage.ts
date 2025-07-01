@@ -48,7 +48,7 @@ export default function renderCheckoutPage(cartId: string): HTMLElement {
             <div class="field">
               <label class="label">Phone</label>
               <div class="control">
-                <input class="input" type="text" name="phone" required pattern="^\\+\\d{1,3}( \\d{3}){3,4}$">
+                <input class="input" type="text" name="phone" required pattern="^\\+\\d{1,3}( \\d{3}){2} \\d{4}$">
               </div>
             </div>
 
@@ -108,7 +108,7 @@ export default function renderCheckoutPage(cartId: string): HTMLElement {
       return;
     }
 
-    router.navigate(`/payment/${cartId}`);
+    router.navigate(`/confirmation`);
   });
 
   return section;

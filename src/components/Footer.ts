@@ -1,17 +1,20 @@
+import router from '../router';
+
 export default function renderFooter(): HTMLElement {
   const footer = document.createElement('footer');
   footer.className = 'has-background-light has-text-dark pt-6';
 
   footer.innerHTML = `
-    <section class="container mb-6" style="background-color: #000; border-radius: 30px; padding: 3rem 2rem; color: #fff; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+    <section class="container mb-6 newsletter-section" style="background-color: #000; border-radius: 30px; padding: 3rem 2rem; color: #fff; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
       <div style="flex: 1 1 50%; font-size: 2.5rem; font-weight: bold; text-transform: uppercase;">
         Stay up to date about our latest offers!
       </div>
-      <div style="flex: 1 1 40%; display: flex; flex-direction: column; gap: 1rem;">
-        <input type="email" placeholder="Enter your email" style="padding: 0.75rem 1rem; border-radius: 8px; border: none; outline: none; font-size: 1rem; background-color: #fff; color: #000;" />
-        <button style="padding: 0.75rem 1rem; border-radius: 8px; border: none; background-color: #fff; color: #000; font-weight: bold; cursor: pointer; font-size: 1rem;">
+      <div class="newsletter-form" style="flex: 1 1 40%; display: flex; flex-direction: column; gap: 1rem;">
+        <input id="newsletter-email" type="email" placeholder="Enter your email" required style="padding: 0.75rem 1rem; border-radius: 8px; border: none; outline: none; font-size: 1rem; background-color: #fff; color: #000;" />
+        <button id="subscribe-btn" style="padding: 0.75rem 1rem; border-radius: 8px; border: none; background-color: #fff; color: #000; font-weight: bold; cursor: pointer; font-size: 1rem;">
           Subscribe to newsletter
         </button>
+        <p id="subscribe-message" class="has-text-success" style="display: none; font-weight: bold; color: #23d160;">Success! You've subscribed to our newsletter.</p>
       </div>
     </section>
 
@@ -84,6 +87,28 @@ export default function renderFooter(): HTMLElement {
     img.style.height = '24px';
     img.style.objectFit = 'contain';
     paymentContainer?.appendChild(img);
+  });
+
+  // Newsletter subscription logic
+  const subscribeBtn = footer.querySelector('#subscribe-btn') as HTMLButtonElement;
+  const emailInput = footer.querySelector('#newsletter-email') as HTMLInputElement;
+  const message = footer.querySelector('#subscribe-message') as HTMLElement;
+
+  subscribeBtn?.addEventListener('click', () => {
+    const email = emailInput.value.trim();
+    if (!email || !emailInput.checkValidity()) {
+      emailInput.style.border = '2px solid red';
+      return;
+    }
+    emailInput.style.border = 'none';
+    subscribeBtn.disabled = true;
+    subscribeBtn.textContent = 'Subscribing...';
+
+    new Promise(resolve => setTimeout(resolve, 1500)).then(() => {
+      message.style.display = 'block';
+      subscribeBtn.style.display = 'none';
+      emailInput.style.display = 'none';
+    });
   });
 
   return footer;

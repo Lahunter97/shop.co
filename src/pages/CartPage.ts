@@ -30,9 +30,10 @@ export default function renderCartPage(): HTMLElement {
   function loadCart() {
     const cart = JSON.parse(localStorage.getItem('cart') || 'null');
 
-    if (!cart || !cart.products || cart.products.length === 0) {
-      localStorage.removeItem('cart');
-      router.navigate('/');
+    if (!cart || !Array.isArray(cart.products) || cart.products.length === 0) {
+      itemsContainer.innerHTML = '';
+      summaryContainer.innerHTML = '';
+      emptyMessage.style.display = 'block';
       return;
     }
 

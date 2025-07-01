@@ -39,13 +39,17 @@ export default function renderHeader(): HTMLElement {
   // Навигация на CartPage
   cartLink.addEventListener('click', (e) => {
     e.preventDefault();
-    const cart = JSON.parse(localStorage.getItem('cart') || 'null');
-    if (cart?.id) {
-      router.navigate(`/cart/${cart.id}`);
-    } else {
-      router.navigate('/');
+    let cart = JSON.parse(localStorage.getItem('cart') || 'null');
+  
+    if (!cart) {
+      // Создаём пустую корзину с уникальным ID по времени
+      const newCartId = Date.now().toString();
+      cart = { id: newCartId, products: [] };
+      localStorage.setItem('cart', JSON.stringify(cart));
     }
+    router.navigate(`/cart/${cart.id}`);
   });
+  
 
   // Профиль (заглушка)
   const profile = document.createElement('button');
